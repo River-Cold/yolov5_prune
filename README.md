@@ -30,6 +30,8 @@ PS：在开源数据集和自有数据集上模型均剪枝成功。
 示例代码 <br>
 ```
 python train.py --img 640 --batch 16 --epochs 50 --weights weights/yolov5s_v6.pt --data data/coco_hand.yaml --cfg models/yolov5s.yaml --name s_hand
+
+python train.py --img 640 --batch 16 --epochs 10 --weights weights/yolov5s.pt --data data/coco128.yaml --cfg models/yolov5s.yaml --name coco128
 ```
 
 #### STEP2:稀疏训练
@@ -38,12 +40,16 @@ python train.py --img 640 --batch 16 --epochs 50 --weights weights/yolov5s_v6.pt
 示例代码<br>
 ```
 python train_sparsity.py --img 640 --batch 16 --epochs 50 --data data/coco_hand.yaml --cfg models/yolov5s.yaml --weights runs/train/s_hand/weights/last.pt --name s_hand_sparsity -sr --scale 0.001 --prune 1
+
+python train_sparsity.py --img 640 --batch 16 --epochs 10 --data data/coco128.yaml --cfg models/yolov5s.yaml --weights runs/train/coco128/weights/best.pt --name coco128_sparsity -sr --scale 0.001 --prune 1
 ```
 
 #### STEP3:通道剪枝策略一
 不对shortcut直连的层进行剪枝，避免维度处理。<br>
 ```
 python prune_yolov5s.py --cfg cfg/yolov5s.cfg --data data/oxfordhand.data --weights weights/yolov5s_prune0.pt --percent 0.8
+
+python prune_yolov5s.py --cfg cfg/yolov5s.cfg --data data/coco128.data --weights weights/best.pt --percent 0.8
 ```
 
 #### STEP3:通道剪枝策略二
